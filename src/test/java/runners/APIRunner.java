@@ -9,14 +9,14 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         // features we use to provide the path of all the feature files
         features = "src/test/resources/features/",
-        glue = "steps",
+        glue = "APISteps",
 
         // when you set dry run to true, it stops actual execution
         // it will quickly scan all the gherkin steps weather they are implemented or not
         // when we set dry to false, it starts execution again
-        dryRun = true,
+        dryRun = false,
         // for run multiple tag put or
-       // tags = "@sprint3 or @sprint1"
+        // tags = "@sprint3 or @sprint1"
         tags = "@api",
 
         // to remove irrelevant information from console, you need to set monochrome to true
@@ -30,7 +30,5 @@ import org.junit.runner.RunWith;
 )
 
 
-
-public class SmokeRunner {
-
+public class APIRunner {
 }
