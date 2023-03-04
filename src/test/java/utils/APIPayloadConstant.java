@@ -1,5 +1,6 @@
 package utils;
 
+import APISteps.APIWorkFlowSteps;
 import org.json.JSONObject;
 
 public class APIPayloadConstant {
@@ -40,4 +41,38 @@ public class APIPayloadConstant {
         return obj.toString();
 
     }
+
+
+    public static String createEmployeePayloadDynamic(String firstname, String lastname, String middlename,
+                                                      String gender, String dob,
+                                                      String empStatus, String jobTitle){
+        JSONObject obj = new JSONObject();
+        obj.put("emp_firstname", firstname);
+        obj.put("emp_lastname", lastname);
+        obj.put("emp_middle_name", middlename);
+        obj.put("emp_gender", gender);
+        obj.put("emp_birthday", dob);
+        obj.put("emp_status", empStatus);
+        obj.put("emp_job_title",jobTitle);
+        return obj.toString();
+    }
+
+
+    public static String updateEmployeePayloadDynamic(String empId, String Fname, String Lname, String Mname,
+                                                      String Gender, String DOB, String empStatus, String jobTitle) {
+
+
+        JSONObject obj = new JSONObject();
+        obj.put("employee_id", empId);
+        obj.put("emp_firstname",Fname);
+        obj.put("emp_lastname", Lname);
+        obj.put("emp_middle_name", Mname);
+        obj.put("emp_gender", Gender);
+        obj.put("emp_birthday", DOB);
+        obj.put("emp_status", empStatus);
+        obj.put("emp_job_title",jobTitle);
+        return obj.toString();
+
+    }
+
 }

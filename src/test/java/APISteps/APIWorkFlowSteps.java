@@ -52,6 +52,7 @@ public class APIWorkFlowSteps {
         System.out.println(employee_id);
     }
 
+    // _________________________________________________________________________________________________________
 
     @Given("a request is prepared for getting a created employee")
     public void a_request_is_prepared_for_getting_a_created_employee() {
@@ -106,4 +107,75 @@ public class APIWorkFlowSteps {
     }
 
 
+    @Given("a request is prepared for creating an employee with dynamic data {string} , {string} , {string} , {string} , {string} , {string} , {string}")
+    public void a_request_is_prepared_for_creating_an_employee_with_dynamic_data
+            (String firstname, String lastname, String middlename, String gender,
+             String dob, String empStatus, String jobTitle) {
+
+
+        request = given().
+                header(APIConstants.Header_Key_Content_Type, APIConstants.Header_Value_Content_Type).
+                header(APIConstants.Header_Key_Authorization, GenerateTokenSteps.token).
+                body(APIPayloadConstant.createEmployeePayloadDynamic(firstname, lastname, middlename, gender, dob, empStatus, jobTitle));
+
+    }
+
+    // UPDATE THE EMPLOYEE
+//____________________________________________________________________________________________________________________________
+
+    @Given("a request is prepared for updating an employee with dynamic data {string} , {string} , {string} , {string} , {string} , {string} , {string} , {string}")
+    public void a_request_is_prepared_for_updating_an_employee_with_dynamic_data
+            (String empId, String Fname, String Lname, String Mname,
+             String Gender, String DOB, String empStatus, String jobTitle) {
+
+        request = given().
+                header(APIConstants.Header_Key_Content_Type,APIConstants.Header_Value_Content_Type).
+                header(APIConstants.Header_Key_Authorization,GenerateTokenSteps.token).
+                body(APIPayloadConstant.updateEmployeePayloadDynamic(empId,Fname,Lname,Mname,Gender,DOB,empStatus,jobTitle));
+
+        employee_id = empId;
+    }
+
+    @When("a PUT call is made to update an employee")
+    public void a_put_call_is_made_to_update_an_employee() {
+         response = request.when().put(APIConstants.UPDATE_EMPLOYEE_URI);
+         response.prettyPrint();
+    }
+
+    @Then("the status code for updating an employee is {int}")
+    public void the_status_code_for_updating_an_employee_is(Integer int1) {
+       response.then().assertThat().statusCode(int1);
+    }
+
+    //  GET THE UPDATED EMPLOYEE
+//____________________________________________________________________________________________________________________________
+
+    @Given("a request is prepared for getting a updated employee")
+    public void a_request_is_prepared_for_getting_a_updated_employee() {
+        request = given().
+                header(APIConstants.Header_Key_Content_Type,APIConstants.Header_Value_Content_Type).
+                header(APIConstants.Header_Key_Authorization,GenerateTokenSteps.token).
+                queryParam("employee_id",employee_id);
+
+
+    }
+
+
+    @Then("the retrieved data at {string} object should match with the data used for updating the employee")
+    public void the_retrieved_data_at_object_should_match_with_the_data_used_for_updating_the_employee(String empObject, DataTable dataTable) {
+
+        List<Map<String, String>> expectedData =  dataTable.asMaps();
+        //to get all the keys and values of employee object, we use jsonPath.get method
+        Map<String, String> actualData = response.body().jsonPath().get(empObject);
+
+        for(Map<String, String> map : expectedData){
+            //it returns all the keys
+            Set<String> keys =   map.keySet();
+            for (String key:keys){
+                String expectedValue = map.get(key);
+                String actualValue = actualData.get(key);
+                Assert.assertEquals(expectedValue, actualValue);
+            }
+        }
+    }
 }
