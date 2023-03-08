@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
         dryRun = false,
         // for run multiple tag put or
        // tags = "@sprint3 or @sprint1"
-        tags = "@regression",
+        tags = "@database",
 
         // to remove irrelevant information from console, you need to set monochrome to true
         monochrome = true,
